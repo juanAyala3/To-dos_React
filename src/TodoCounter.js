@@ -13,10 +13,13 @@ const estilos={
 
 function TodoCounter({ total, completed}){
     return (
+        <>
     <h1 className="TodoCounter">
         XDProbando la NUEVA RAMA ; Has completado  <span> {completed} </span>  de   
          <span> {total}</span> TODOS
     </h1>
+    </>
+
         );
   }
 
