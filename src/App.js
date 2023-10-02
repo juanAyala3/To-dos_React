@@ -7,6 +7,10 @@ import { CreateTodoButton } from './CreateTodoButton';
 import React from 'react';
 
 
+/*
+
+Hay que copiar y pegar este codigo comentado para empezar  a mostrar los TODOS
+
 const defaultTodos=[
   {text: 'Cortar cebolla',  completed: false},
   {text: 'Tomar el curso de introduccion a  React.js',  completed: false},
@@ -16,8 +20,23 @@ const defaultTodos=[
   {text: 'futbol',  completed: true},
 ];
 
+localStorage.setItem('TODOS_v1', JSON.stringify(defaultTodos) )  ;
+*/
+
 function App() {
-  const [todos, setTodos]=React.useState(defaultTodos); 
+
+const  localStorageTodos=localStorage.getItem('TODOS_v1'); 
+
+let  parsedTodos; 
+
+if(!localStorageTodos){   //metodologia  del error fish
+  localStorage.setItem('TODOS_v1',  JSON.stringify([]));
+    parsedTodos=[];
+}else{
+  parsedTodos=JSON.parse(localStorageTodos)
+}
+
+  const [todos, setTodos]=React.useState(parsedTodos); 
   const [searchValue , setSearchValue]=React.
   useState(''); 
 
@@ -33,13 +52,19 @@ const  searchedTodos= todos.filter(
   }
 
 );
+
+const saveTodos= (newTodos) =>{ //recibe un nuevo  array de TODOS para actualizar el  estado y el local storage
+  localStorage.setItem('TODOS_v1',  JSON.stringify(newTodos));
+  setTodos(newTodos); 
+}
+
   const completeTodo= (text)=>{
     const newTodos= [...todos]; //... crea una copia de todos
     const todoIndex= newTodos.findIndex(
       (todo) => todo.text == text
     )
     newTodos[todoIndex].completed=true; 
-    setTodos(newTodos); 
+    saveTodos(newTodos); 
   }
 
   const deleteTodo= (text)=>{
@@ -48,7 +73,7 @@ const  searchedTodos= todos.filter(
       (todo) => todo.text == text
     )
     newTodos.splice(todoIndex, 1); 
-    setTodos(newTodos); 
+    saveTodos(newTodos); 
   }
 
   return (
